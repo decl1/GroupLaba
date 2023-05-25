@@ -15,3 +15,5 @@ class Pawns : public Figure {};  // ѕешка
 class Deck {
 	Figure figure[8][8];
 };
+
+//“ут бы я
