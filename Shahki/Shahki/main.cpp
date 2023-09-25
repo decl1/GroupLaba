@@ -3,51 +3,75 @@
 #include <conio.h>
 #include <math.h>
 
-// eto shahki
-// pupupu
-
 class shahka {
 protected:
 	int type; // -1 black, 0 neutral, 1 white
 	bool queen; // 0 neutal, 1 - queen
 public:
+	shahka() : type(0), queen(0) {}
+	shahka(int t) : type(t), queen(abs(0 * t)) {};
+	shahka(const shahka& sh): type(sh.type), queen(sh.queen) {}
 	int gettype() {
 		return type;
-	}
+	};
 	bool getqueen() {
 		return queen;
+	};
+	void changetype(int t) {
+		type = t;
+		queen = abs(queen * t);
 	}
-
+	void givequeen() {
+		queen = 1;
+	}
 };
 class Deck {
 protected:
 	shahka deck[8][8]; 
 public:
+	Deck() {
+		for (int i = 0; i<8;i++){
+			for (int j = 0; j < 8; j++) {
+				if (i < 3) {
+				if (i % 2 == 0 && j % 2 != 0)
+					deck[i][j].changetype(-1);
+				else if (i % 2 != 0 && j % 2 == 0)
+					deck[i][j].changetype(-1);
+				}
+				if (i > 4) {
+					if (i % 2 == 0 && j % 2 != 0)
+						deck[i][j].changetype(1);
+					else if (i % 2 != 0 && j % 2 == 0)
+						deck[i][j].changetype(1);
+				}
+			}
+		}
+	}
 	void printDeck();
 	int hodshashi(int start, int end, class shahka& sh);
 };
 
 int Deck::hodshashi(int start, int end, class shahka& sh) {
 
-	int xs = start / 8; // dec[x][y] для старта
+	int xs = start / 8; // dec[x][y] пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	int ys = start % 8;
-	int xe = end / 8; // dec[x][y] для хода
+	int xe = end / 8; // dec[x][y] пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	int ye = end % 8;
-	if (deck[xs][ys].getqueen() == 0) { // проверка, что не королева
-		if (deck[xs][ys].gettype() == 0) { //проверка, что клетка не пустая
+	if (deck[xs][ys].getqueen() == 0) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		if (deck[xs][ys].gettype() == 0) { //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			return 0;
 		}
-		else if (deck[xs][ys].gettype() == 1) { //белая фишкa
-			if ((xs - xe == 1) && (abs(ys - ye) == 1)) { // проверка хода в соседнюю клетку
-				if (abs(deck[xe][ye].gettype() == 1)) { // если клетка занята. то хода нет
+		else if (deck[xs][ys].gettype() == 1) { //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅa
+			if ((xs - xe == 1) && (abs(ys - ye) == 1)) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+				if (abs(deck[xe][ye].gettype() == 1)) { // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 					return 0;
 				}
-				if (abs(deck[xe][ye].gettype() == 0)) { // верный ход
+				if (abs(deck[xe][ye].gettype() == 0)) { // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 					return 1;
 				}
 			}
-			else if ((xs - xe == 2) && (abs(ys-ye) == 2)) { //съедание
-				if (deck[abs(xs-1)][(ys+ye)/2].gettype() == -1) { // получилось съесть
+			else if ((xs - xe == 2) && (abs(ys-ye) == 2)) { //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+				if (deck[abs(xs-1)][(ys+ye)/2].gettype() == -1) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 					return 2;
 				}
 				else {
@@ -56,17 +80,17 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 
 			}
 		}
-		else if ((deck[xs][ys].gettype() == -1)) { //черная фишка
-			if ((xe - xs == 1) && (abs(ye - ys) == 1)) {//проверка хода в соседнюю
+		else if ((deck[xs][ys].gettype() == -1)) { //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+			if ((xe - xs == 1) && (abs(ye - ys) == 1)) {//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				if (abs(deck[xe][ye].gettype() == 1)) {
 					return 0;
 				}
-				if (abs(deck[xe][ye].gettype() == 0)) { // верный ход
+				if (abs(deck[xe][ye].gettype() == 0)) { // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 					return 1;
 				}
 			}
 			else if ((xe - xs == 2) && (abs(ys - ye) == 2)) {
-				if (deck[abs(xe - 1)][(ys + ye) / 2].gettype() == 1) {// съедание
+				if (deck[abs(xe - 1)][(ys + ye) / 2].gettype() == 1) {// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 					return 2;
 				}
 				else {
@@ -77,24 +101,24 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 		}
 	}
 
-	else if (deck[xs][ys].getqueen() == 1) { // фишка - королева
-		if (deck[xs][ys].gettype() == 0) { // клетка пустая
+	else if (deck[xs][ys].getqueen() == 1) { // пїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		if (deck[xs][ys].gettype() == 0) { // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			return 0;
 		}
-		else if (deck[xs][ys].gettype() == 1) { //фишка белая
-			if (xs == xe || ys == ye) { // вертикаль и горизонталь
+		else if (deck[xs][ys].gettype() == 1) { //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+			if (xs == xe || ys == ye) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				return 0;
 			}
 			else {
-				if (abs(deck[xe][ye].gettype() == 1)) { // клетка занята
+				if (abs(deck[xe][ye].gettype() == 1)) { // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 					return 0;
 				}
 				else if (abs(deck[xe][ye].gettype() == 0)){
 					if (ys < ye) {
 						int xss = xs - 1;
 						int yss = ys + 1;
-						int numW = 0; // количество белых на пути
-						int numB = 0; // количество черных на пути
+						int numW = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+						int numB = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 						while (xss != xe && yss != ye) {
 							xss -= 1;
 							yss += 1;
@@ -105,21 +129,21 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 								numB++;
 							}
 						}
-						if (numW == 0 && numB == 0) { //никого на пути
+						if (numW == 0 && numB == 0) { //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 							return 1;
 						}
-						else if (numW != 0 || numB > 1) { // не может так походить
+						else if (numW != 0 || numB > 1) { // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 							return 0;
 						}
-						else if (numB == 1) { // поедание черной
+						else if (numB == 1) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 							return 2;
 						}
 					}
 					else if (ys > ye) {
 						int XS = xs - 1;
 						int YS = ys - 1;
-						int nW = 0; // количество белых на пути
-						int nB = 0; // количество черных на пути
+						int nW = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
+						int nB = 0; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 						while (XS != xe && YS != ye) {
 							XS -= 1;
 							YS -= 1;
@@ -130,13 +154,13 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 								nB++;
 							}
 						}
-						if (nW== 0 && nB == 0) { //никого на пути
+						if (nW== 0 && nB == 0) { //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 							return 1;
 						}
-						else if (nW != 0 || nB > 1) { // не может так походить
+						else if (nW != 0 || nB > 1) { // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 							return 0;
 						}
-						else if (nB == 1) { // поедание черной
+						else if (nB == 1) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 							return 2;
 						}
 					}
@@ -144,12 +168,12 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 			}
 		}
 
-		else if (deck[xs][ys].gettype() == -1) {// черная королева
-			if (xs == xe || ys == ye) { // вертикаль и горизонталь
+		else if (deck[xs][ys].gettype() == -1) {// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+			if (xs == xe || ys == ye) { // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 				return 0;
 			}
 			else {
-				if (abs(deck[xe][ye].gettype() == 1)) { // клетка занята
+				if (abs(deck[xe][ye].gettype() == 1)) { // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 					return 0;
 				}
 				else {
@@ -169,13 +193,13 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 								NB++;
 							}
 						}
-						if (NW > 1 && NB != 0) {// нельзя
+						if (NW > 1 && NB != 0) {// пїЅпїЅпїЅпїЅпїЅпїЅ
 							return 0;
 						}
-						else if (NW == 0 && NB == 0) {//никого на пути
+						else if (NW == 0 && NB == 0) {//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 							return 1;
 						}
-						else if (NW == 1) {//кушать
+						else if (NW == 1) {//пїЅпїЅпїЅпїЅпїЅпїЅ
 							return 2;
 						}
 					}
@@ -194,13 +218,13 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 								nb++;
 							}
 						}
-						if (nw > 1 && nb != 0) {// нельзя
+						if (nw > 1 && nb != 0) {// пїЅпїЅпїЅпїЅпїЅпїЅ
 							return 0;
 						}
-						else if (nw == 0 && nb == 0) {//никого на пути
+						else if (nw == 0 && nb == 0) {//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 							return 1;
 						}
-						else if (nw == 1) {//кушать
+						else if (nw == 1) {//пїЅпїЅпїЅпїЅпїЅпїЅ
 							return 2;
 						}
 					}
@@ -210,13 +234,54 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 		}
 	}
 
-
 }
 
 void Deck::printDeck() {
-
+	for (int x = 0; x < 31; x++) {
+		if ((x + 1) % 4 == 0) {
+			for (int y = 0; y < 27; y++) {
+					std::cout << " #";
+			}
+		}
+		else {
+			for (int y = 0; y < 31; y++) {
+				if ((y + 1) % 4 == 0) {
+					std::cout << "#";
+				}
+				else {
+					if ((y + 1) % 2 == 0 && (x + 1) % 2 == 0) {
+						if(deck[x / 4][y / 4].gettype() == 1)
+							std::cout << " W";
+						if (deck[x / 4][y / 4].gettype() == -1)
+							std::cout << " B";
+						if (deck[x / 4][y / 4].gettype() == 0)
+							std::cout << "  ";
+					}
+					else {
+						std::cout << "  ";
+					}
+				}
+			}
+		}
+		std::cout << std::endl;
+	}
 }
 
+int deckcoordcounter(char x, int y) {
+	if (y >= 1 && y <= 8) {
+		if (x >= 65 && x <= 72)
+			return ((x - 4) % 10 * y) - 1;
+		if (x >= 97 && x <= 104)
+			return ((x - 6) % 10 * y) - 1;
+	}
+	else {
+		return -1;
+	}
+}
 
 void main() {
+	//debug zone
+	Deck deck;
+	deck.printDeck();
+	//debug zone
 }
