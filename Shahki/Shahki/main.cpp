@@ -1,5 +1,7 @@
 #include <iostream>
 
+// eto shahki
+
 class Deck {
 protected:
 
