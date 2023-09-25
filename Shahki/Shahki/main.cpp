@@ -48,10 +48,10 @@ public:
 		}
 	}
 	void printDeck();
-	int hodshashi(int start, int end, class shahka& sh);
+	int hodshashi(int start, int end);
 };
 
-int Deck::hodshashi(int start, int end, class shahka& sh) {
+int Deck::hodshashi(int start, int end) {
 
 	int xs = start / 8; // dec[x][y] ��� ������
 	int ys = start % 8;
@@ -79,6 +79,9 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 				}
 
 			}
+			else {
+				return 0;
+			}
 		}
 		else if ((deck[xs][ys].gettype() == -1)) { //������ �����
 			if ((xe - xs == 1) && (abs(ye - ys) == 1)) {//�������� ���� � ��������
@@ -97,7 +100,9 @@ int Deck::hodshashi(int start, int end, class shahka& sh) {
 					return 0;
 				}
 			}
-
+			else {
+				return 0;
+			}
 		}
 	}
 
@@ -279,9 +284,12 @@ int deckcoordcounter(char x, int y) {
 	}
 }
 
+
 void main() {
 	//debug zone
 	Deck deck;
-	deck.printDeck();
+	//system("cls");
+	std::cout << deck.hodshashi(40, 34);
+
 	//debug zone
 }
