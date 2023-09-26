@@ -89,6 +89,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 					deck[xs][ys].changetype(0);
 					deck[abs(xs - 1)][(ys + ye) / 2].changetype(0);
 					deck[xe][ye].changetype(1);
+					blacks--;
 					return 2;
 				}
 				else {
@@ -116,6 +117,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 					deck[xs][ys].changetype(0);
 					deck[abs(xe - 1)][(ys + ye) / 2].changetype(0);
 					deck[xe][ye].changetype(-1);
+					whites--;
 					return 2;
 				}
 				else {
@@ -174,6 +176,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							deck[xs][ys].changetype(0);
 							deck[coords[0]][coords[1]].changetype(0);
 							deck[xe][ye].changetype(1);
+							blacks--;
 							return 2;
 						}
 						coords.clear();
@@ -208,6 +211,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							deck[xs][ys].changetype(0);
 							deck[Coords[0]][Coords[1]].changetype(0);
 							deck[xe][ye].changetype(1);
+							blacks--;
 							return 2;
 						}
 						Coords.clear();
@@ -256,6 +260,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							deck[xs][ys].changetype(0);
 							deck[coordS[0]][coordS[1]].changetype(0);
 							deck[xe][ye].changetype(-1);
+							whites--;
 							return 2;
 						}
 						coordS.clear();
@@ -290,6 +295,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							deck[xs][ys].changetype(0);
 							deck[cOords[0]][cOords[1]].changetype(0);
 							deck[xe][ye].changetype(-1);
+							whites--;
 							return 2;
 						}
 						cOords.clear();
