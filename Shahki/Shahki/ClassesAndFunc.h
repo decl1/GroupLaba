@@ -60,10 +60,10 @@ public:
 	int getwhites() {
 		return whites;
 	}
-	int hodshashi(int start, int end);
+	int hodshashi(int start, int end, bool player_queue);
 };
 
-int Deck::hodshashi(int start, int end) {
+int Deck::hodshashi(int start, int end, bool player_queue) {
 
 	int xs = start / 8;
 	int ys = start % 8;
@@ -73,14 +73,14 @@ int Deck::hodshashi(int start, int end) {
 		if (deck[xs][ys].gettype() == 0) {
 			return 0;
 		}
-		else if (deck[xs][ys].gettype() == 1) {
+		else if (deck[xs][ys].gettype() == 1 && player_queue == 0) {
 			if ((xs - xe == 1) && (abs(ys - ye) == 1)) {
 				if (abs(deck[xe][ye].gettype() == 1)) {
 					return 0;
 				}
 				if (abs(deck[xe][ye].gettype() == 0)) {
 					deck[xs][ys].changetype(0);
-					deck[xe][ys].changetype(1);
+					deck[xe][ye].changetype(1);
 					return 1;
 				}
 			}
@@ -100,7 +100,7 @@ int Deck::hodshashi(int start, int end) {
 				return 0;
 			}
 		}
-		else if ((deck[xs][ys].gettype() == -1)) {
+		else if ((deck[xs][ys].gettype() == -1) && player_queue == 1) {
 			if ((xe - xs == 1) && (abs(ye - ys) == 1)) {
 				if (abs(deck[xe][ye].gettype() == 1)) {
 					return 0;
@@ -126,13 +126,16 @@ int Deck::hodshashi(int start, int end) {
 				return 0;
 			}
 		}
+		else {
+			return 0;
+		}
 	}
 
 	else if (deck[xs][ys].getqueen() == 1) {
 		if (deck[xs][ys].gettype() == 0) {
 			return 0;
 		}
-		else if (deck[xs][ys].gettype() == 1) {
+		else if (deck[xs][ys].gettype() == 1 && player_queue == 0) {
 			if (xs == xe || ys == ye) {
 				return 0;
 			}
@@ -213,7 +216,7 @@ int Deck::hodshashi(int start, int end) {
 			}
 		}
 
-		else if (deck[xs][ys].gettype() == -1) {
+		else if (deck[xs][ys].gettype() == -1 && player_queue == 1) {
 			if (xs == xe || ys == ye) {
 				return 0;
 			}
@@ -296,6 +299,9 @@ int Deck::hodshashi(int start, int end) {
 					}
 				}
 			}
+		}
+		else {
+			return 0;
 		}
 	}
 

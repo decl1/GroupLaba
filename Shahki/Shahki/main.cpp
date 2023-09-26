@@ -20,7 +20,7 @@ void main() {
 		std::cin >> xs >> ys;
 		std::cout << "Enter move: ";
 		std::cin >> xe >> ye;
-		move = gdeck.hodshashi(deckcoordcounter(xs, ys), deckcoordcounter(xe, ye));
+		move = gdeck.hodshashi(deckcoordcounter(xs, ys), deckcoordcounter(xe, ye), player_queue);
 		if (move == 0)
 			std::cout << "Incorrect move";
 		if (move == 1) {
