@@ -25,9 +25,11 @@ void main() {
 			std::cout << "Incorrect move";
 		if (move == 1) {
 			std::cout << "Correct move";
+			gdeck.checkqueen(xe, ye, player_queue);
 			player_queue = !(player_queue);
 		}
 		if (move == 2) {
+			gdeck.checkqueen(xe, ye, player_queue);
 			std::cout << "Correct move";
 		}
 		std::cout << std::endl;

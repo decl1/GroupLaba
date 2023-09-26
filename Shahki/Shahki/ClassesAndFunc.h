@@ -1,6 +1,7 @@
 #pragma once
 #include "Libs.h"
 
+
 class shahka {
 protected:
 	int type; // -1 black, 0 neutral, 1 white
@@ -61,6 +62,14 @@ public:
 		return whites;
 	}
 	int hodshashi(int start, int end, bool player_queue);
+	void checkqueen(int xe, int ye, bool queue) {
+		if (queue = 0 && xe == 0) {
+			deck[xe][ye].getqueen();
+		}
+		if (queue = 1 && xe == 7) {
+			deck[xe][ye].getqueen();
+		}
+	}
 };
 
 int Deck::hodshashi(int start, int end, bool player_queue) {
@@ -327,12 +336,16 @@ void Deck::printDeck() {
 				}
 				else {
 					if ((y + 1) % 2 == 0 && (x + 1) % 2 == 0) {
-						if (deck[x / 4][y / 4].gettype() == 1)
+						if (deck[x / 4][y / 4].gettype() == 1 && deck[x / 4][y / 4].getqueen() == 0)
 							std::cout << " W";
-						if (deck[x / 4][y / 4].gettype() == -1)
+						if (deck[x / 4][y / 4].gettype() == -1 && deck[x / 4][y / 4].getqueen() == 0)
 							std::cout << " B";
 						if (deck[x / 4][y / 4].gettype() == 0)
 							std::cout << "  ";
+						if (deck[x / 4][y / 4].gettype() == 1 && deck[x / 4][y / 4].getqueen() == 1)
+							std::cout << "_W";
+						if (deck[x / 4][y / 4].gettype() == -1 && deck[x / 4][y / 4].getqueen() == 1)
+							std::cout << "_B";
 					}
 					else {
 						std::cout << "  ";
