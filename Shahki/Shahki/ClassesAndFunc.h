@@ -26,8 +26,10 @@ public:
 class Deck {
 protected:
 	shahka deck[8][8];
+	int blacks;
+	int whites;
 public:
-	Deck() {
+	Deck() : blacks(12), whites(12) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (i < 3) {
@@ -46,6 +48,12 @@ public:
 		}
 	}
 	void printDeck();
+	int getblacks() {
+		return blacks;
+	}
+	int getwhites() {
+		return whites;
+	}
 	int hodshashi(int start, int end);
 };
 
@@ -273,9 +281,9 @@ void Deck::printDeck() {
 int deckcoordcounter(char x, int y) {
 	if (y >= 1 && y <= 8) {
 		if (x >= 65 && x <= 72)
-			return ((x - 4) % 10 * y) - 1;
+			return ((y - 1) * 8 + (x - 5)%10);
 		if (x >= 97 && x <= 104)
-			return ((x - 6) % 10 * y) - 1;
+			return ((y - 1) * 8 + (x - 7)%10);
 	}
 	else {
 		return -1;
