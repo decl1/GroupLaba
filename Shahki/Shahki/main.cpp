@@ -1,7 +1,6 @@
 #include "ClassesAndFunc.h"
 
 void main() {
-	Deck dbdeck;
 	//debug zone
 
 	//debug zone
