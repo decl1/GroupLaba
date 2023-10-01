@@ -20,8 +20,8 @@ public:
 		type = t;
 		queen = abs(queen * t);
 	}
-	void givequeen() {
-		queen = 1;
+	void givequeen(int i) {
+		queen = i;
 	}
 };
 class Deck {
@@ -71,10 +71,10 @@ public:
 	int hodshashi(int start, int end, bool player_queue);
 	void checkqueen(int xe, int ye, bool queue) {
 		if (queue == 0 && xe == 0) {
-			deck[xe][ye].givequeen();
+			deck[xe][ye].givequeen(1);
 		}
 		if (queue == 1 && xe == 7) {
-			deck[xe][ye].givequeen();
+			deck[xe][ye].givequeen(1);
 		}
 	}
 };
@@ -95,16 +95,18 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 					return 0;
 				}
 				if (abs(deck[xe][ye].gettype() == 0)) {
-					deck[xs][ys].changetype(0);
 					deck[xe][ye].changetype(1);
+					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+					deck[xs][ys].changetype(0);
 					return 1;
 				}
 			}
 			else if ((xs - xe == 2) && (abs(ys - ye) == 2)) {
 				if (deck[abs(xs - 1)][(ys + ye) / 2].gettype() == -1) {
-					deck[xs][ys].changetype(0);
-					deck[abs(xs - 1)][(ys + ye) / 2].changetype(0);
 					deck[xe][ye].changetype(1);
+					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+					deck[abs(xs - 1)][(ys + ye) / 2].changetype(0);
+					deck[xs][ys].changetype(0);
 					blacks--;
 					return 2;
 				}
@@ -123,16 +125,18 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 					return 0;
 				}
 				if (abs(deck[xe][ye].gettype() == 0)) {
-					deck[xs][ys].changetype(0);
 					deck[xe][ye].changetype(-1);
+					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+					deck[xs][ys].changetype(0);
 					return 1;
 				}
 			}
 			else if ((xe - xs == 2) && (abs(ys - ye) == 2)) {
 				if (deck[abs(xe - 1)][(ys + ye) / 2].gettype() == 1) {
-					deck[xs][ys].changetype(0);
-					deck[abs(xe - 1)][(ys + ye) / 2].changetype(0);
 					deck[xe][ye].changetype(-1);
+					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+					deck[abs(xe - 1)][(ys + ye) / 2].changetype(0);
+					deck[xs][ys].changetype(0);
 					whites--;
 					return 2;
 				}
@@ -162,7 +166,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 					return 0;
 				}
 				else if (abs(deck[xe][ye].gettype()) == 0) {
-					if (ys < ye) {
+					if (ys < ye && xs > xe) {
 						int xss = xs - 1;
 						int yss = ys + 1;
 						int numW = 0;
@@ -181,56 +185,142 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							}
 						}
 						if (numW == 0 && numB == 0) {
-							deck[xs][ys].changetype(0);
 							deck[xe][ye].changetype(1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
 							return 1;
 						}
 						else if (numW != 0 || numB > 1) {
 							return 0;
 						}
 						else if (numB == 1) {
-							deck[xs][ys].changetype(0);
-							deck[coords[0]][coords[1]].changetype(0);
 							deck[xe][ye].changetype(1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
 							blacks--;
 							return 2;
 						}
 						coords.clear();
+						coords.shrink_to_fit();
 					}
-					else if (ys > ye) {
-						int XSS = xs - 1;
-						int YSS = ys - 1;
-						int nW = 0;
-						int nB = 0;
-						std::vector<int> Coords;
-						while (XSS != xe && YSS != ye) {
-							XSS -= 1;
-							YSS -= 1;
-							if (deck[XSS][YSS].gettype() == 1) {
-								nW++;
+					else if (ys < ye && xs < xe) {
+						int xss = xs + 1;
+						int yss = ys + 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xe && yss != ye) {
+							xss += 1;
+							yss += 1;
+
+							if (deck[xss][yss].gettype() == 1) {
+								coords.push_back(xss);
+								coords.push_back(yss);
+								numW++;
 							}
-							else if (deck[XSS][YSS].gettype() == -1) {
-								nB++;
-								Coords.push_back(XSS);
-								Coords.push_back(XSS);
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
 							}
 						}
-						if (nW == 0 && nB == 0) {
-							deck[xs][ys].changetype(0);
+						if (numW == 0 && numB == 0) {
 							deck[xe][ye].changetype(1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
 							return 1;
 						}
-						else if (nW != 0 || nB > 1) {
+						else if (numW != 0 || numB > 1) {
 							return 0;
 						}
-						else if (nB == 1) {
-							deck[xs][ys].changetype(0);
-							deck[Coords[0]][Coords[1]].changetype(0);
+						else if (numB == 1) {
 							deck[xe][ye].changetype(1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
 							blacks--;
 							return 2;
 						}
-						Coords.clear();
+						coords.clear();
+						coords.shrink_to_fit();
+					}
+					else if (ys > ye && xs < xe) {
+						int xss = xs + 1;
+						int yss = ys - 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xs && yss != ys) {
+							xss += 1;
+							yss -= 1;
+							if (deck[xss][yss].gettype() == 1) {
+								numW++;
+								coords.push_back(xss);
+								coords.push_back(yss);
+							}
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
+							}
+						}
+						if (numW > 1 && numB != 0) {
+							return 0;
+						}
+						else if (numW == 0 && numB == 0) {
+							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
+							return 1;
+						}
+						else if (numW == 1) {
+							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
+							whites--;
+							return 2;
+						}
+						coords.clear();
+						coords.shrink_to_fit();
+					}
+					else if (ys > ye && xs > xe) {
+						int xss = xs - 1;
+						int yss = ys - 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xe && yss != ye) {
+							xss -= 1;
+							yss -= 1;
+							if (deck[xss][yss].gettype() == 1) {
+								numW++;
+							}
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
+								coords.push_back(xss);
+								coords.push_back(yss);
+							}
+						}
+						if (numW == 0 && numB == 0) {
+							deck[xe][ye].changetype(1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
+							return 1;
+						}
+						else if (numW != 0 || numB > 1) {
+							return 0;
+						}
+						else if (numB == 1) {
+							deck[xe][ye].changetype(1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
+							blacks--;
+							return 2;
+						}
+						coords.clear();
+						coords.shrink_to_fit();
+					}
+					else {
+						return 0;
 					}
 				}
 			}
@@ -245,76 +335,158 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 					return 0;
 				}
 				else {
-					if (ys < ye) {
-						int xS = xs + 1;
-						int yS = ys + 1;
-						int NW = 0;
-						int NB = 0;
-						std::vector<int> coordS;
-						while (xS != xe && yS != ye) {
-							xS += 1;
-							yS += 1;
+					if (ys < ye && xs < xe) {
+						int xss = xs + 1;
+						int yss = ys + 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xe && yss != ye) {
+							xss += 1;
+							yss += 1;
 
-							if (deck[xS][yS].gettype() == 1) {
-								coordS.push_back(xS);
-								coordS.push_back(yS);
-								NW++;
+							if (deck[xss][yss].gettype() == 1) {
+								coords.push_back(xss);
+								coords.push_back(yss);
+								numW++;
 							}
-							else if (deck[xS][yS].gettype() == -1) {
-								NB++;
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
 							}
 						}
-						if (NW > 1 && NB != 0) {
+						if (numW > 1 && numB != 0) {
 							return 0;
 						}
-						else if (NW == 0 && NB == 0) {
-							deck[xs][ys].changetype(0);
+						else if (numW == 0 && numB == 0) {
 							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
 							return 1;
 						}
-						else if (NW == 1) {
-							deck[xs][ys].changetype(0);
-							deck[coordS[0]][coordS[1]].changetype(0);
+						else if (numW == 1) {
 							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						coordS.clear();
+						coords.clear();
+						coords.shrink_to_fit();
 					}
-					else if (ys > ye) {
-						int XS = xs + 1;
-						int YS = ys - 1;
-						int nw = 0;
-						int nb = 0;
-						std::vector<int> cOords;
-						while (XS != xs && YS != ys) {
-							XS += 1;
-							YS -= 1;
-							if (deck[XS][YS].gettype() == 1) {
-								nw++;
-								cOords.push_back(XS);
-								cOords.push_back(YS);
+					else if (ys < ye && xs > xe) {
+						int xss = xs - 1;
+						int yss = ys + 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xe && yss != ye) {
+							xss -= 1;
+							yss += 1;
+							if (deck[xss][yss].gettype() == 1) {
+								numW++;
 							}
-							else if (deck[XS][YS].gettype() == -1) {
-								nb++;
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
+								coords.push_back(xss);
+								coords.push_back(yss);
 							}
 						}
-						if (nw > 1 && nb != 0) {
+						if (numW > 1 && numB != 0) {
 							return 0;
 						}
-						else if (nw == 0 && nb == 0) {
-							deck[xs][ys].changetype(0);
+						else if (numW == 0 && numB == 0) {
 							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
 							return 1;
 						}
-						else if (nw == 1) {
-							deck[xs][ys].changetype(0);
-							deck[cOords[0]][cOords[1]].changetype(0);
+						else if (numW == 1) {
 							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						cOords.clear();
+						coords.clear();
+						coords.shrink_to_fit();
+					}
+					else if (ys > ye && xs > xe) {
+						int xss = xs - 1;
+						int yss = ys - 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xe && yss != ye) {
+							xss -= 1;
+							yss -= 1;
+							if (deck[xss][yss].gettype() == 1) {
+								numW++;
+							}
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
+								coords.push_back(xss);
+								coords.push_back(yss);
+							}
+						}
+						if (numW > 1 && numB != 0) {
+							return 0;
+						}
+						else if (numW == 0 && numB == 0) {
+							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
+							return 1;
+						}
+						else if (numW == 1) {
+							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
+							whites--;
+							return 2;
+						}
+						coords.clear();
+						coords.shrink_to_fit();
+					}
+					else if (ys > ye  && xs < xe) {
+						int xss = xs + 1;
+						int yss = ys - 1;
+						int numW = 0;
+						int numB = 0;
+						std::vector<int> coords;
+						while (xss != xs && yss != ys) {
+							xss += 1;
+							yss -= 1;
+							if (deck[xss][yss].gettype() == 1) {
+								numW++;
+								coords.push_back(xss);
+								coords.push_back(yss);
+							}
+							else if (deck[xss][yss].gettype() == -1) {
+								numB++;
+							}
+						}
+						if (numW > 1 && numB != 0) {
+							return 0;
+						}
+						else if (numW == 0 && numB == 0) {
+							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[xs][ys].changetype(0);
+							return 1;
+						}
+						else if (numW == 1) {
+							deck[xe][ye].changetype(-1);
+							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+							deck[coords[0]][coords[1]].changetype(0);
+							deck[xs][ys].changetype(0);
+							whites--;
+							return 2;
+						}
+						coords.clear();
+						coords.shrink_to_fit();
 					}
 					else {
 						return 0;
