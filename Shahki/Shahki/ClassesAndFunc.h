@@ -171,7 +171,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						int yss = ys + 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
+						int coordX, coordY;
 						while (xss != xe && yss != ye) {
 							xss -= 1;
 							yss += 1;
@@ -180,8 +180,8 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							}
 							else if (deck[xss][yss].gettype() == -1) {
 								numB++;
-								coords.push_back(xss);
-								coords.push_back(yss);
+								coordX = xss;
+								coordY = yss;
 							}
 						}
 						if (numW == 0 && numB == 0) {
@@ -196,30 +196,28 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numB == 1) {
 							deck[xe][ye].changetype(1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							blacks--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else if (ys < ye && xs < xe) {
 						int xss = xs + 1;
 						int yss = ys + 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
+						int coordX, coordY;
 						while (xss != xe && yss != ye) {
 							xss += 1;
 							yss += 1;
 
 							if (deck[xss][yss].gettype() == 1) {
-								coords.push_back(xss);
-								coords.push_back(yss);
 								numW++;
 							}
 							else if (deck[xss][yss].gettype() == -1) {
+								coordX = xss;
+								coordY = yss;
 								numB++;
 							}
 						}
@@ -235,29 +233,27 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numB == 1) {
 							deck[xe][ye].changetype(1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							blacks--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else if (ys > ye && xs < xe) {
 						int xss = xs + 1;
 						int yss = ys - 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
-						while (xss != xs && yss != ys) {
+						int coordX, coordY;
+						while (xss != xe && yss != ye) {
 							xss += 1;
 							yss -= 1;
 							if (deck[xss][yss].gettype() == 1) {
 								numW++;
-								coords.push_back(xss);
-								coords.push_back(yss);
 							}
 							else if (deck[xss][yss].gettype() == -1) {
+								coordX = xss;
+								coordY = yss;
 								numB++;
 							}
 						}
@@ -265,28 +261,26 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							return 0;
 						}
 						else if (numW == 0 && numB == 0) {
-							deck[xe][ye].changetype(-1);
+							deck[xe][ye].changetype(1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
 							deck[xs][ys].changetype(0);
 							return 1;
 						}
-						else if (numW == 1) {
-							deck[xe][ye].changetype(-1);
+						else if (numB == 1) {
+							deck[xe][ye].changetype(1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else if (ys > ye && xs > xe) {
 						int xss = xs - 1;
 						int yss = ys - 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
+						int coordX, coordY;
 						while (xss != xe && yss != ye) {
 							xss -= 1;
 							yss -= 1;
@@ -295,8 +289,8 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 							}
 							else if (deck[xss][yss].gettype() == -1) {
 								numB++;
-								coords.push_back(xss);
-								coords.push_back(yss);
+								coordX = xss;
+								coordY = yss;
 							}
 						}
 						if (numW == 0 && numB == 0) {
@@ -311,13 +305,11 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numB == 1) {
 							deck[xe][ye].changetype(1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							blacks--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else {
 						return 0;
@@ -340,18 +332,17 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						int yss = ys + 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
+						int coordX, coordY;
 						while (xss != xe && yss != ye) {
 							xss += 1;
 							yss += 1;
-
-							if (deck[xss][yss].gettype() == 1) {
-								coords.push_back(xss);
-								coords.push_back(yss);
-								numW++;
-							}
-							else if (deck[xss][yss].gettype() == -1) {
+							if (deck[xss][yss].gettype() == -1) {
 								numB++;
+							}
+							else if (deck[xss][yss].gettype() == 1) {
+								coordX = xss;
+								coordY = yss;
+								numW++;
 							}
 						}
 						if (numW > 1 && numB != 0) {
@@ -366,30 +357,28 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numW == 1) {
 							deck[xe][ye].changetype(-1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else if (ys < ye && xs > xe) {
 						int xss = xs - 1;
 						int yss = ys + 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
+						int coordX, coordY;
 						while (xss != xe && yss != ye) {
 							xss -= 1;
 							yss += 1;
 							if (deck[xss][yss].gettype() == 1) {
+								coordX = xss;
+								coordY = yss;
 								numW++;
 							}
 							else if (deck[xss][yss].gettype() == -1) {
 								numB++;
-								coords.push_back(xss);
-								coords.push_back(yss);
 							}
 						}
 						if (numW > 1 && numB != 0) {
@@ -404,30 +393,28 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numW == 1) {
 							deck[xe][ye].changetype(-1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else if (ys > ye && xs > xe) {
 						int xss = xs - 1;
 						int yss = ys - 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
+						int coordX, coordY;
 						while (xss != xe && yss != ye) {
 							xss -= 1;
 							yss -= 1;
 							if (deck[xss][yss].gettype() == 1) {
+								coordX = xss;
+								coordY = yss;
 								numW++;
 							}
 							else if (deck[xss][yss].gettype() == -1) {
 								numB++;
-								coords.push_back(xss);
-								coords.push_back(yss);
 							}
 						}
 						if (numW > 1 && numB != 0) {
@@ -442,27 +429,25 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numW == 1) {
 							deck[xe][ye].changetype(-1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
-					else if (ys > ye  && xs < xe) {
+					else if (ys > ye && xs < xe) {
 						int xss = xs + 1;
 						int yss = ys - 1;
 						int numW = 0;
 						int numB = 0;
-						std::vector<int> coords;
-						while (xss != xs && yss != ys) {
+						int coordX, coordY;
+						while (xss != xe && yss != ye) {
 							xss += 1;
 							yss -= 1;
 							if (deck[xss][yss].gettype() == 1) {
+								coordX = xss;
+								coordY = yss;
 								numW++;
-								coords.push_back(xss);
-								coords.push_back(yss);
 							}
 							else if (deck[xss][yss].gettype() == -1) {
 								numB++;
@@ -480,13 +465,11 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 						else if (numW == 1) {
 							deck[xe][ye].changetype(-1);
 							deck[xe][ye].givequeen(deck[xs][ys].getqueen());
-							deck[coords[0]][coords[1]].changetype(0);
+							deck[coordX][coordY].changetype(0);
 							deck[xs][ys].changetype(0);
 							whites--;
 							return 2;
 						}
-						coords.clear();
-						coords.shrink_to_fit();
 					}
 					else {
 						return 0;
@@ -498,7 +481,9 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 			return 0;
 		}
 	}
-
+	else {
+		return 0;
+	}
 }
 
 void Deck::printDeck() {

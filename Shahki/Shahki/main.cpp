@@ -1,6 +1,6 @@
 #include "ClassesAndFunc.h"
 
-void main() {
+int main() {
 	//debug zone
 
 	//debug zone
