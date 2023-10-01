@@ -5,7 +5,7 @@ void main() {
 
 	//debug zone
 
-	Deck gdeck;
+	Deck gdeck(1);
 	bool player_queue = 0; // 0 - white, 1 - black;
 	char xs;
 	int ys;
@@ -22,18 +22,18 @@ void main() {
 		std::cin >> xe >> ye;
 		move = gdeck.hodshashi(deckcoordcounter(xs, ys), deckcoordcounter(xe, ye), player_queue);
 		if (move == 0)
-			std::cout << "Incorrect move";
+			std::cout << "Incorrect move"; 
 		if (move == 1) {
 			std::cout << "Correct move";
-			gdeck.checkqueen(xe, ye, player_queue);
+			gdeck.checkqueen(ye-1,deckcoordcounter(xe,1), player_queue);
 			player_queue = !(player_queue);
 		}
 		if (move == 2) {
-			gdeck.checkqueen(xe, ye, player_queue);
+			gdeck.checkqueen(ye - 1, deckcoordcounter(xe, 1), player_queue);
 			std::cout << "Correct move";
 		}
 		std::cout << std::endl;
-		system("pause");
+		//system("pause");
 		system("cls");
 	}
 }

@@ -30,6 +30,16 @@ protected:
 	int blacks;
 	int whites;
 public:
+
+	/// debug
+
+	Deck(int k) : blacks(1), whites(1) {
+		deck[1][1].changetype(k);
+		deck[6][6].changetype(-1);
+	};
+
+	/// debug
+
 	Deck() : blacks(12), whites(12) {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -49,12 +59,9 @@ public:
 		}
 	}
 	void printDeck();
-	void deckgivequeen(int x, int y) {
-		deck[x][y].givequeen();
-	}
 	bool getqueenn(int x, int y) {
 		return deck[x][y].getqueen();
-  }
+    }
 	int getblacks() {
 		return blacks;
 	}
@@ -63,11 +70,11 @@ public:
 	}
 	int hodshashi(int start, int end, bool player_queue);
 	void checkqueen(int xe, int ye, bool queue) {
-		if (queue = 0 && xe == 0) {
-			deck[xe][ye].getqueen();
+		if (queue == 0 && xe == 0) {
+			deck[xe][ye].givequeen();
 		}
-		if (queue = 1 && xe == 7) {
-			deck[xe][ye].getqueen();
+		if (queue == 1 && xe == 7) {
+			deck[xe][ye].givequeen();
 		}
 	}
 };
@@ -343,9 +350,9 @@ void Deck::printDeck() {
 						if (deck[x / 4][y / 4].gettype() == 0)
 							std::cout << "  ";
 						if (deck[x / 4][y / 4].gettype() == 1 && deck[x / 4][y / 4].getqueen() == 1)
-							std::cout << "_W";
+							std::cout << "+W";
 						if (deck[x / 4][y / 4].gettype() == -1 && deck[x / 4][y / 4].getqueen() == 1)
-							std::cout << "_B";
+							std::cout << "+B";
 					}
 					else {
 						std::cout << "  ";
