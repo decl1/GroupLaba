@@ -488,7 +488,7 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 
 void Deck::printDeck() {
 	for (int i = 0; i < 31; i++) {
-		if ((i+3) % 4 == 0) {
+		if ((i-2) % 4 == 0) {
 			std::cout << char(int('a') + i / 4);
 		}
 		else {
@@ -496,7 +496,13 @@ void Deck::printDeck() {
 		}
 	}
 	std::cout << std::endl;
-	for (int x = 0; x < 31; x++) {
+
+	for (int y = 0; y < 29; y++) {
+		std::cout << "# ";
+	}
+	std::cout << std::endl;
+	for (int x = 0; x < 32; x++) {
+		std::cout << "#";
 		if ((x + 1) % 4 == 0) {
 			for (int y = 0; y < 27; y++) {
 				std::cout << " #";
@@ -523,11 +529,17 @@ void Deck::printDeck() {
 					else {
 						std::cout << "  ";
 					}
-					if (y == 30 && (x + 1) % 2 == 0) {
-						std::cout << x / 4+1;
-					}
 				}
 			}
+		}
+		if ((x + 1) % 4) {
+			std::cout << "#";
+		}
+		else {
+			std::cout << " #";
+		}
+		if ((x + 3) % 4 == 0) {
+			std::cout << " " << x / 4 + 1;
 		}
 		std::cout << std::endl;
 	}
