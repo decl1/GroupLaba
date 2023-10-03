@@ -22,10 +22,13 @@ int main() {
 		std::cout << "Enter move: ";
 		std::cin >> xe >> ye;
 		move = gdeck.hodshashi(deckcoordcounter(xs, ys), deckcoordcounter(xe, ye), player_queue);
-		if (move == 0)
-			std::cout << "Incorrect move"; 
+		if (move == 0) {
+			std::cout << "Incorrect move";
+			system("pause");
+		}
 		if (move == 1) {
 			std::cout << "Correct move";
+			system("pause");
 			gdeck.checkqueen(ye-1,deckcoordcounter(xe,1), player_queue);
 			player_queue = !(player_queue);
 		}

@@ -90,19 +90,21 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 			return 0;
 		}
 		else if (deck[xs][ys].gettype() == 1 && player_queue == 0) {
-			if ((xs - xe == 1) && (abs(ys - ye) == 1)) {
-				if (abs(deck[xe][ye].gettype() == 1)) {
+			if ((deck[xs-1][ys-1].gettype() == -1 && deck[xs-2][ys-2].gettype() == 0) ||
+				(deck[xs-1][ys+1].gettype() == -1 && deck[xs-2][ys+2].gettype() == 0)
+				){
+				if ((xe != xs - 2 && ye != ys - 2) || (xe != xs - 2 && ys != ys + 2)) {
 					return 0;
 				}
-				if (abs(deck[xe][ye].gettype() == 0)) {
+				else if (xe == (xs - 2) && ye == (ys - 2)) {
 					deck[xe][ye].changetype(1);
 					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+					deck[abs(xs - 1)][(ys + ye) / 2].changetype(0);
 					deck[xs][ys].changetype(0);
-					return 1;
+					blacks--;
+					return 2;
 				}
-			}
-			else if ((xs - xe == 2) && (abs(ys - ye) == 2)) {
-				if (deck[abs(xs - 1)][(ys + ye) / 2].gettype() == -1) {
+				else if (xe == (xs - 2) && ye == (ys + 2)) {
 					deck[xe][ye].changetype(1);
 					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
 					deck[abs(xs - 1)][(ys + ye) / 2].changetype(0);
@@ -113,26 +115,37 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 				else {
 					return 0;
 				}
-
 			}
 			else {
-				return 0;
+				if ((xs - xe == 1) && (abs(ys - ye) == 1)) {
+					if (abs(deck[xe][ye].gettype() == 1)) {
+						return 0;
+					}
+					if (abs(deck[xe][ye].gettype() == 0)) {
+						deck[xe][ye].changetype(1);
+						deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+						deck[xs][ys].changetype(0);
+						return 1;
+					}
+				}
 			}
 		}
 		else if ((deck[xs][ys].gettype() == -1) && player_queue == 1) {
-			if ((xe - xs == 1) && (abs(ye - ys) == 1)) {
-				if (abs(deck[xe][ye].gettype() == 1)) {
+			if ((deck[xs + 1][ys - 1].gettype() == 1 && deck[xs + 2][ys - 2].gettype() == 0) ||
+				(deck[xs+1][ys+1].gettype() == 1 && deck[xs+2][ys+2].gettype() == 0)
+				) {
+				if ((xe != xs + 2 && ye != ys - 2) || (xe != xs + 2 && ye != ys + 2)) {
 					return 0;
 				}
-				if (abs(deck[xe][ye].gettype() == 0)) {
+				else if (xe == xs + 2 && ye == ys - 2) {
 					deck[xe][ye].changetype(-1);
 					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+					deck[abs(xe - 1)][(ys + ye) / 2].changetype(0);
 					deck[xs][ys].changetype(0);
-					return 1;
+					whites--;
+					return 2;
 				}
-			}
-			else if ((xe - xs == 2) && (abs(ys - ye) == 2)) {
-				if (deck[abs(xe - 1)][(ys + ye) / 2].gettype() == 1) {
+				else if (xe == xs + 2 && ys == ys + 2) {
 					deck[xe][ye].changetype(-1);
 					deck[xe][ye].givequeen(deck[xs][ys].getqueen());
 					deck[abs(xe - 1)][(ys + ye) / 2].changetype(0);
@@ -145,7 +158,17 @@ int Deck::hodshashi(int start, int end, bool player_queue) {
 				}
 			}
 			else {
-				return 0;
+				if ((xe - xs == 1) && (abs(ye - ys) == 1)) {
+					if (abs(deck[xe][ye].gettype() == 1)) {
+						return 0;
+					}
+					if (abs(deck[xe][ye].gettype() == 0)) {
+						deck[xe][ye].changetype(-1);
+						deck[xe][ye].givequeen(deck[xs][ys].getqueen());
+						deck[xs][ys].changetype(0);
+						return 1;
+					}
+				}
 			}
 		}
 		else {
