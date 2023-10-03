@@ -6,7 +6,7 @@ int main() {
 	system("mode con cols=60 lines=40");
 	//console
 
-	Deck gdeck; // debug - gdeck(1)
+	Deck gdeck(1); // debug - gdeck(1)
 	bool player_queue = 0; // 0 - white, 1 - black;
 	char xs;
 	int ys;
